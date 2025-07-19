@@ -146,8 +146,7 @@ const Navbar = () => {
           <li><NavLink to="/add-task" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>Add Task</NavLink></li>
           <li><NavLink to="/borujer" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>Browse Tasks</NavLink></li>
           <li><NavLink to="/poste" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>My Posted Tasks</NavLink></li>
-          <li><NavLink to="/dashbord" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>Dashbord</NavLink></li>
-          <li><NavLink to="/Blog" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>About</NavLink></li>
+          <li><NavLink to="/about" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>About</NavLink></li>
         </ul>
 
         <div className="relative flex gap-4 items-center z-10">
