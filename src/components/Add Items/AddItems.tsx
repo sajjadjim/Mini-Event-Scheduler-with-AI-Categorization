@@ -35,7 +35,7 @@ const AddItem: React.FC = () => {
     console.log("📦 Submitted Event Data:", payload);
 
     try {
-      const res = await fetch("http://localhost:3000/items", {
+      const res = await fetch("https://ts-express-server-seven.vercel.app/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

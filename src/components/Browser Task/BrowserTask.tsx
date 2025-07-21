@@ -56,7 +56,25 @@ const BrowserTask: React.FC<BrowserTaskProps> = ({ apiUrl }) => {
         style={styles.searchInput}
       />
 
-      {loading && <p>Loading tasks...</p>}
+      {loading && <div style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "2rem 0" }}>
+          <div style={{
+            border: "4px solid #f3f3f3",
+            borderTop: "4px solid #0070f3",
+            borderRadius: "50%",
+            width: 40,
+            height: 40,
+            animation: "spin 1s linear infinite"
+          }} />
+          <p style={{ marginTop: 16 }}>Loading tasks...</p>
+          <style>
+            {`
+              @keyframes spin {
+                0% { transform: rotate(0deg);}
+                100% { transform: rotate(360deg);}
+              }
+            `}
+          </style>
+        </div>}
       {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
       {!loading && !error && filteredTasks.length === 0 && (
@@ -65,7 +83,7 @@ const BrowserTask: React.FC<BrowserTaskProps> = ({ apiUrl }) => {
 
       <div style={styles.cardGrid}>
         {filteredTasks.map((task) => (
-          <div key={task._id} style={styles.card}>
+          <div  key={task._id} style={styles.card}>
             <h2 style={styles.cardTitle}>{task.title}</h2>
             <p><strong>Name:</strong> {task.name}</p>
             <p><strong>Email:</strong> {task.email}</p>
@@ -116,6 +134,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
     transition: "transform 0.2s ease",
     cursor: "default",
+    
   },
   cardTitle: {
     margin: "0 0 1rem",

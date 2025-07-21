@@ -33,7 +33,7 @@ const MyTask: React.FC = () => {
     if (!email) return;
 
     axios
-      .get(`http://localhost:3000/items/user/${encodeURIComponent(email)}`)
+      .get(`https://ts-express-server-seven.vercel.app/items/user/${encodeURIComponent(email)}`)
       .then((res) => {
         const data = Array.isArray(res.data) ? res.data : [res.data];
         setTasks(data);
@@ -65,7 +65,7 @@ const MyTask: React.FC = () => {
     if (!selectedTask) return;
 
     axios
-      .put(`http://localhost:3000/items/${selectedTask._id}`, {
+      .put(`https://ts-express-server-seven.vercel.app/items/${selectedTask._id}`, {
         time: formData.time,
         notes: formData.notes,
         description: formData.description,

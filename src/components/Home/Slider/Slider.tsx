@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Sparkles, Zap } from 'lucide-react';
-import img1 from '../../../assets/simg1.jpg'
-import img2 from '../../../assets/simg2.jpg'
-import img3 from '../../../assets/simg3.avif'
-import img4 from '../../../assets/simg4.jpg'
+import img1 from '../../../assets/image1.jpg'
+import img2 from '../../../assets/image2.jpg'
+import img3 from '../../../assets/image3.jpg'
+import img4 from '../../../assets/image4.avif'
 const Slider: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
@@ -22,7 +22,7 @@ const Slider: React.FC = () => {
     {
       id: 1,
       image: img1,
-      title: 'Discover Top Apps',
+      title: 'Ai Categorization',
       subtitle: 'Handpicked, powerful, and ready for you. Dive into a curated selection.',
       color: 'from-violet-600 via-purple-600 to-indigo-600',
       accent: 'violet'
@@ -30,7 +30,7 @@ const Slider: React.FC = () => {
     {
       id: 2,
       image: img2,
-      title: 'Track. Learn. Grow.',
+      title: 'Event Schedule',
       subtitle: 'From fitness to finance, we\'ve got an app for that.',
       color: 'from-emerald-500 via-teal-500 to-cyan-500',
       accent: 'emerald'
@@ -38,7 +38,7 @@ const Slider: React.FC = () => {
     {
       id: 3,
       image: img3,
-      title: 'Built for Everyone',
+      title: 'See Other Post',
       subtitle: 'Smooth design, optimized performance across all devices.',
       color: 'from-rose-500 via-pink-500 to-fuchsia-500',
       accent: 'rose'
@@ -46,7 +46,7 @@ const Slider: React.FC = () => {
     {
       id: 4,
       image: img4,
-      title: 'The Future is App-Based',
+      title: 'Update Your Task',
       subtitle: 'Stay connected. Stay productive. Stay ahead.',
       color: 'from-orange-500 via-amber-500 to-yellow-500',
       accent: 'orange'
@@ -87,11 +87,11 @@ const Slider: React.FC = () => {
       {/* Header */}
       <div className="relative z-10 pt-20 pb-10 text-center">
         <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-4">
-          Experience Excellence
+           Mini Event Scheduler with AI Categorization
         </h1>
         <div className="flex items-center justify-center gap-2 text-gray-400">
           <Sparkles className="w-5 h-5 animate-spin-slow" />
-          <p className="text-lg">Discover, explore, and transform your digital journey</p>
+          <p className="text-lg">Mini Event Scheduler</p>
           <Zap className="w-5 h-5 animate-bounce" />
         </div>
       </div>
