@@ -1,77 +1,73 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import type { User } from 'firebase/auth';  // <--- type-only import here
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
+} from 'firebase/auth';
 import { auth } from '../Firebase/firebase.config';
-import { AuthContext } from './Authcontext';
+import { AuthContext, type AuthContextType } from './Authcontext'; // <--- type-only import for AuthContextType
 
+// rest of your code unchanged
 
 const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
-
-const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // create new_user account for new account email and password 
   const createUser = (email: string, password: string) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
-  }
+  };
 
-  // sign in user with email and password
-  const signIn = (email : string, password : string) => {
+  const signIn = (email: string, password: string) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
-  }
+  };
 
-  // new create account sign up with google 
   const googleProvider = new GoogleAuthProvider();
-  const signInWithGoogle = () =>{
+  const signInWithGoogle = () => {
     setLoading(true);
-    return signInWithPopup(auth ,googleProvider );
-  }
+    return signInWithPopup(auth, googleProvider);
+  };
 
-  // logout the user 
-  const logOut = () =>{
+  const logOut = () => {
     setLoading(true);
     return signOut(auth);
-  }
+  };
 
-  // user Information update 
   const updateUserProfile = (userInfo: { displayName?: string; photoURL?: string }) => {
     if (auth.currentUser) {
       return updateProfile(auth.currentUser, userInfo);
     }
-    return Promise.reject(new Error("No authenticated user."));
-  }
+    return Promise.reject(new Error('No authenticated user.'));
+  };
 
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, currentUser => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      // console.log('user in the auth state change', currentUser)
       setLoading(false);
     });
 
     return () => {
       unSubscribe();
-    }
-  }, [])
+    };
+  }, []);
 
-  const authInfo = {
+  const authInfo: AuthContextType = {
     user,
     loading,
     createUser,
     signIn,
     signInWithGoogle,
     logOut,
-    updateUserProfile
-  }
-  // console.log("Current user :" , user)
-  console.log("Current user :" , user?.email)
+    updateUserProfile,
+  };
 
-  return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { FaEyeSlash } from 'react-icons/fa';
 import { IoEyeSharp } from 'react-icons/io5';
@@ -24,8 +24,6 @@ if (!auth) {
   return null; 
 }
 const { signIn, signInWithGoogle } = auth;
-
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -56,12 +54,10 @@ const { signIn, signInWithGoogle } = auth;
   const handleGoogleLogin = async () => {
     signInWithGoogle()
       .then(() => {
-        // The signed-in user info.
-        // const user = result.user;
-        // console.log('Google User:', user);
         toast.success("Signed in with Google ✅");
         setTimeout(() => {
-          navigate(`${location.state ? location.state : '/'}`)
+          // Always navigate to home page after login
+          navigate('/');
         }, 1000)
       })
       .catch((error: string) => {

@@ -1,160 +1,175 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import {  AiOutlineMoon, AiOutlineSun } from 'react-icons/ai';
-import { NavLink, useNavigate } from 'react-router';
+import React, { useState, useEffect, useRef } from "react";
+import {  AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
+import { NavLink, useNavigate } from "react-router";
+import useAuth from "../../Hook/useAuth";
 
-// import img1 from '../../assets/gjj.jpeg'
-
-// Sidebar Component
-const ProfileSidebar = () => {
-//   const [activeItem, setActiveItem] = useState(null);
+const Navbar: React.FC = () => {
+  const auth = useAuth();
+  const user = auth?.user;
+  const logOut = auth?.logOut;
   const navigate = useNavigate();
 
-  const menuItems = [
-    { id: 'profiles', icon: "👥", text: "See all profiles", isButton: true, className: "bg-gray-200 text-center font-medium py-2" },
-    { id: 'business', icon: "◯", text: "Meta Business Suite", hasArrow: true },
-    { id: 'settings', icon: "⚙️", text: "Settings & privacy", hasArrow: true },
-    { id: 'help', icon: "❓", text: "Help & support", hasArrow: true },
-    { id: 'display', icon: "🌙", text: "Display & accessibility", hasArrow: true },
-    { id: 'feedback', icon: "💬", text: "Give feedback", subText: "CTRL B" },
-    { id: 'logout', icon: "📤", text: "Log out" }
-  ];
-
-
-  return (
-    <div className="w-80 rounded-lg shadow-lg bg-white overflow-hidden text-gray-800">
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex flex-col items-center text-center space-y-2">
-          <div className="w-16 h-16 rounded-full overflow-hidden">
-            {/* <img src={user.photoUrl || user.photoURL} alt="User profile" className="w-full h-full object-cover" /> */}
-          </div>
-          <div>
-            <h3 className="font-medium text-gray-900"></h3>
-            <p className="text-sm text-gray-600"></p>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center space-x-2">
-          <span className="text-green-600 text-xl">🔔</span>
-          <span className="text-sm">নতুন নতুন চাকুরি বিজ্ঞপ্তি 2025</span>
-        </div>
-      </div>
-
-      <div className="py-1">
-        {menuItems.map((item) => (
-          <div
-            key={item.id}
-            onClick={() => console.log("Clicked")}
-            className={`${
-              item.isButton ? item.className : "px-4 py-3 hover:bg-gray-100 cursor-pointer"
-            }  "bg-gray-50" : ""}`}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <span className="text-gray-500 w-6 text-center">{item.icon}</span>
-                <div>
-                  <span className="text-gray-800">{item.text}</span>
-                  {item.subText && (
-                    <div className="text-xs text-gray-500">{item.subText}</div>
-                  )}
-                </div>
-              </div>
-              {item.hasArrow && <span className="text-gray-400">›</span>}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="p-3 text-xs text-gray-500 border-t border-gray-200">
-        <div className="flex flex-wrap gap-x-1">
-          <span>Privacy</span><span>·</span><span>Terms</span><span>·</span>
-          <span>Advertising</span><span>·</span><span>Ad choices</span><span>›</span><span>·</span>
-          <span>Cookies</span><span>·</span>
-          <div className="flex flex-wrap">
-            <span>More</span><span>·</span><span>Meta © 2025</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Main Navbar Component
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== "undefined") {
-      if (localStorage.theme) {
-        return localStorage.theme === 'dark';
-      } else {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches;
-      }
-    }
-    return false;
-  });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-//   const { user, logOut } = useContext(AuthContext);
-  const dropdownRef = useRef(null);
-  const navigate = useNavigate();
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    if (darkMode) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [darkMode]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDropdownOpen(false);
       }
-    };
-
+    }
     if (dropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownOpen]);
 
 
+  const handleLogout = async () => {
+    try {
+      if (logOut) {
+        await logOut();
+      }
+      navigate("/auth/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   return (
-    <nav className="text-white fixed top-0 left-0 w-full z-50">
-      <div className=" mx-auto flex justify-between items-center bg-gray-900 dark:bg-gray-800 px-6 py-6 backdrop-blur-xl sticky top-0 relative overflow-visible  ">
-        <div className="absolute inset-0 rounded-2xl pointer-events-none z-0">
-          {/* <BorderBeam size={600} duration={20} colorFrom="#7A34F2" colorTo="#87CEEB" /> */}
-        </div>
-
+    <nav className="fixed top-0 left-0 w-full z-50 text-white">
+      <div className="mx-auto flex justify-between items-center bg-gray-900 dark:bg-gray-800 px-6 py-6 backdrop-blur-xl relative overflow-visible">
+        {/* Logo */}
         <div className="flex items-center gap-4 z-10">
-          <img className='w-20 cursor-pointer' src={""} alt="Logo" />
+          <p className="text-2xl 2xl:text-3xl font-bold">Event Scheduler</p>
         </div>
 
+        {/* Desktop Links */}
         <ul className="hidden md:flex gap-6 text-lg z-10">
-          <li><NavLink to="/" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>Home</NavLink></li>
-          <li><NavLink to="/add_items" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>Add Item</NavLink></li>
-          <li><NavLink to="/borujer" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>Browse Tasks</NavLink></li>
-          <li><NavLink to="/poste" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>My Posted Tasks</NavLink></li>
-          <li><NavLink to="/about" className={({ isActive }) => `block px-4 py-2 border-b border-purple-600 rounded-full transition ${isActive ? "bg-[#7A34F2] text-white" : ""}`}>About</NavLink></li>
+            {[
+            { to: "/", label: "Home" },
+            { to: "/browser_task", label: "Browse Tasks" },
+            // Only show these if user is logged in
+            ...(user
+              ? [
+                { to: "/add_items", label: "Add Task" },
+                { to: "/my_task", label: "My Posted Tasks" },
+              ]
+              : []),
+            { to: "/about", label: "About" },
+            ].map(({ to, label }) => (
+            <li key={to}>
+              <NavLink
+              to={to}
+              className={({ isActive }) =>
+                `block px-4 py-2 border-b border-purple-600 rounded-full transition ${
+                isActive ? "bg-[#7A34F2] text-white" : ""
+                }`
+              }
+              >
+              {label}
+              </NavLink>
+            </li>
+            ))}
         </ul>
 
-        <div className="relative flex gap-4 items-center z-10">
-          <button onClick={toggleDarkMode} className="p-2 rounded-full hover:bg-purple-700 transition">
-            {darkMode ? <AiOutlineSun size={22} /> : <AiOutlineMoon size={22} />}
+        {/* Right controls */}
+        <div className="flex items-center gap-4 z-10">
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 rounded-full hover:bg-purple-700 transition"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <AiOutlineMenu size={24} />
           </button>
+
+          {/* User Section */}
+          {user ? (
+            <div className="relative" ref={dropdownRef}>
+              <div className="relative group">
+                <button
+                  onClick={() => setDropdownOpen((prev) => !prev)}
+                  className="p-2 rounded-full bg-purple-700 hover:bg-purple-600 transition"
+                >
+                  <AiOutlineUser size={22} />
+                </button>
+                <span className="absolute hidden group-hover:block bg-gray-700 text-sm px-2 py-1 rounded left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap">
+                  {user.email}
+                </span>
+              </div>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-gray-800 rounded-md shadow-lg py-2 z-20">
+                  <button
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      navigate("/settings");
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-purple-700"
+                  >
+                    Settings
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 hover:bg-purple-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate("/auth/login")}
+              className="px-4 py-2 bg-purple-700 rounded-full hover:bg-purple-600 transition"
+            >
+              Join Us
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Mobile Menu Modal */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0  bg-opacity-70 z-50 flex justify-end">
+          <div className="w-64 bg-gray-900 p-6">
+            <button
+              className="mb-6 text-white cursor-pointer hover:text-purple-500"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Close
+            </button>
+            <ul className="flex flex-col gap-4 text-lg">
+              {[
+                { to: "/", label: "Home" },
+                { to: "/add_items", label: "Add Task" },
+                { to: "/browser_task", label: "Browse Tasks" },
+                { to: "/poste", label: "My Posted Tasks" },
+                { to: "/about", label: "About" },
+              ].map(({ to, label }) => (
+                <li key={to}>
+                  <NavLink
+                    to={to}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `block px-4 py-2 rounded-md transition ${
+                        isActive ? "bg-[#7A34F2] text-white" : "hover:bg-gray-800"
+                      }`
+                    }
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

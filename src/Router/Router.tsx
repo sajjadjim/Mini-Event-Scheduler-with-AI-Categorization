@@ -6,9 +6,12 @@ import HomeLayout from "../Layout/HomeLayout";
 import Error from "../Error/Erro";
 import About from "../components/ABout/About";
 import AddItem from "../components/Add Items/AddItems";
-import AUthentication from "../Layout/AUthentication";
 import Login from "../components/Authentication/Login";
 import Register from "../components/Authentication/Register";
+import BrowsTask from "../components/Browser Task/BrowsTask";
+import AUthentication from "../Layout/Authentication";
+import MyTask from "../components/My posted Task/MyTask";
+import PrivateRoute from "../Routers/PrivateRoute";
 
 
 const router = createBrowserRouter([
@@ -30,13 +33,21 @@ const router = createBrowserRouter([
       },
       {
         path:'/add_items',
-        element: <AddItem></AddItem>
+        element: <PrivateRoute><AddItem></AddItem></PrivateRoute>
+      },
+      {
+        path:'/browser_task',
+        element: <PrivateRoute><BrowsTask></BrowsTask></PrivateRoute>
+      },
+      {
+        path: '/my_task',
+        element:<PrivateRoute> <MyTask></MyTask></PrivateRoute>
       }
     ],
   },
   {
     path: '/auth',
-    Component: AUthentication,
+    element:<AUthentication></AUthentication>,
     children:[
       {
         path: 'login',

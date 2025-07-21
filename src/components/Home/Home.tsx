@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import Slider from './Slider/Slider.js'
 const Home = () => {
     useEffect(() => {
