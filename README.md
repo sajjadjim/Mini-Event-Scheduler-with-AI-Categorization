@@ -50,6 +50,11 @@ Edit
 
 ## ⚙️ Installation
 
+
+---
+
+## ⚙️ Installation
+
 To run the project locally:
 
 ```bash
@@ -64,7 +69,7 @@ npm install
 
 # 4. Start the development server
 npm run dev
-The app should be live at http://localhost:5173/
+
 
 ✨ Usage Guide
 Go to the home page and add a new event (title, date, time, notes).
